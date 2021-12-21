@@ -3,11 +3,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CarGarageApi.Models
 {
-    public class Vehicle
+    public class VehicleFullDetails
     {
 
         [BsonId]
         public int? Id { get; set; }
+
+        [BsonElement("name")]
+        public string WareHouseName { get; set; } = null!;
+
+        [BsonElement("location")]
+        public Location WareHouseLocation { get; set; } = null!;
+
+        [BsonElement("location")]
+        public string CarsLocation { get; set; } = null!;
+
+
 
         [BsonElement("make")]
         public string Make { get; set; } = null!;
@@ -27,5 +38,9 @@ namespace CarGarageApi.Models
         [BsonElement("date_added")]
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public string DateAdded { get; set; }
+
+       
+
+
     }
 }

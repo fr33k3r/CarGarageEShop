@@ -1,5 +1,6 @@
 ﻿using CarGarageApi.Models;
 using CarGarageApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ namespace CarGarageApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("CorsPolicy")]
+    [Authorize]
     public class WarehousesController : ControllerBase
     {
         private readonly CarGarageService _carGarageService;
@@ -21,17 +23,31 @@ namespace CarGarageApi.Controllers
         //    await _carGarageService.GetAsync();
 
         [HttpGet]
-        public async Task<List<Vehicle>> Get()
+        public async Task<List<VehicleFullDetails>> Get()
         {
             List<Warehouse> warehouses  = await _carGarageService.GetAsync();
 
-            List<Vehicle> vehicles = new List<Vehicle>();
+            List<VehicleFullDetails> vehicles = new List<VehicleFullDetails>();
 
             foreach (Warehouse warehouse in warehouses)
             {               
                 foreach(var vehicle in warehouse.Cars.Vehicles)
                 {
-                    vehicles.Add(vehicle);
+                    VehicleFullDetails vehicleFullDetails = new VehicleFullDetails()
+                    {
+                        Id = vehicle.Id,
+                        WareHouseName = warehouse.Name,
+                        WareHouseLocation = warehouse.Location,
+                        CarsLocation = warehouse.Cars.Location,
+                        Make = vehicle.Make,
+                        Model = vehicle.Model,
+                        YearModel = vehicle.YearModel,
+                        Price = vehicle.Price,
+                        Licensed = vehicle.Licensed,
+                        DateAdded = vehicle.DateAdded
+                    };
+
+                    vehicles.Add(vehicleFullDetails);
                 }                         
             }
             return vehicles.OrderBy(x => x.DateAdded).ToList();
