@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace CarGarageApi.Services
 {
-    public class CarGarageService
+    public class CarGarageService:ICarGarageService
     {
         private readonly IMongoCollection<Warehouse> _WarehousesCollection;        
 

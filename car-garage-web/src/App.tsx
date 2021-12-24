@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
 import configData from "./config.json";
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+
 
 //Components
-import Item from './Item/Item';
-import Cart from './Cart/Cart';
+import Item from './Components/Item/Item';
+import Cart from './Components/Cart/Cart';
 import Drawer from '@material-ui/core/Drawer';
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Grid from "@material-ui/core/Grid";
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Badge from '@material-ui/core/Badge';
 
-
 //Styles
 import { Wrapper, StyledButton } from "./App.styles";
+import { Apple } from "@material-ui/icons";
 
 //Types
 export type CartItemType = {
@@ -48,7 +49,7 @@ const getVehicles = async (): Promise<CartItemType[]> =>
     })).json();
 
 const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart')  || '[]')
-
+const queryClient = new QueryClient()
 
 const App = () => {
 
@@ -98,8 +99,10 @@ const App = () => {
   if (isLoading) return <LinearProgress/>;
   if (error) return <div>Error loading vehicle list ...</div>;
 
-  return (
-    <Wrapper>
+  return (    
+    <QueryClientProvider client={queryClient}>            
+    <Wrapper>      
+      <h1>Welcome To Frank's Garage</h1>
       <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false) }>
         <Cart 
           cartItems={cartItems} 
@@ -125,8 +128,14 @@ const App = () => {
             ))
         }
       </Grid>
-    </Wrapper>    
+    </Wrapper>  
+    </QueryClientProvider>  
   );
 };
 
-export default App;
+export default function Wraped(){
+  return(<QueryClientProvider client={queryClient}>
+          <App/>
+      </QueryClientProvider>
+  );
+}

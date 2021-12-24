@@ -1,4 +1,5 @@
 ﻿using CarGarageApi.Models;
+using CarGarageApi.Services;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -111,7 +112,7 @@ namespace CarGarageApi.Tests.Services
 
         public async Task CreateAsync(Warehouse newWarehouse) => await Task.Run( () =>_WarehousesCollection.Add(newWarehouse));
 
-        public async Task<Warehouse?> UpdateAsync(string id, Warehouse updatedWarehouse)
+        public async Task<Warehouse> UpdateAsync(string id, Warehouse updatedWarehouse)
         {
             var warehouse = await Task.FromResult(_WarehousesCollection?.FirstOrDefault(x => x.Id == id));
             await Task.FromResult(warehouse = updatedWarehouse);
