@@ -7,10 +7,15 @@ namespace CarGarageApi.Controllers
     [Route("[Controller]")]
     public class JwtController: ControllerBase
     {
+        private readonly JwtToken _jwtToken;
+
+        public JwtController(JwtToken jwtToken) =>
+            _jwtToken = jwtToken; 
+
         [HttpGet]
         public IActionResult Jwt()
         {            
-            return new ObjectResult(JwtToken.GenerateJwtToken());
+            return new ObjectResult(_jwtToken.GenerateJwtToken());
         }
     }
 }

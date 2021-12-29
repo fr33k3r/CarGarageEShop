@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CarGarageApi.Tests.Services
 {
-    public class CarGarageServiceFake
+    public class CarGarageServiceFake: ICarGarageService
     {
         private readonly List<Warehouse> _WarehousesCollection;
 
@@ -112,13 +112,14 @@ namespace CarGarageApi.Tests.Services
 
         public async Task CreateAsync(Warehouse newWarehouse) => await Task.Run( () =>_WarehousesCollection.Add(newWarehouse));
 
-        public async Task<Warehouse> UpdateAsync(string id, Warehouse updatedWarehouse)
+        public async Task UpdateAsync(string id, Warehouse updatedWarehouse)
         {
             var warehouse = await Task.FromResult(_WarehousesCollection?.FirstOrDefault(x => x.Id == id));
             await Task.FromResult(warehouse = updatedWarehouse);
-            return warehouse;
+            //return warehouse;
         }
 
-        public async Task RemoveAsync(string id) => await Task.FromResult(_WarehousesCollection.Remove(_WarehousesCollection.First(x => x.Id == id)));        
+        public async Task RemoveAsync(string id) => await Task.FromResult(_WarehousesCollection.Remove(_WarehousesCollection.First(x => x.Id == id)));
+        
     }
 }

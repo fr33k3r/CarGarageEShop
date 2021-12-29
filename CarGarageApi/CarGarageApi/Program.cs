@@ -2,7 +2,8 @@ using CarGarageApi.Models;
 using CarGarageApi.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Configuration;
+using CarGarageApi.Helpers;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +16,10 @@ builder.Services.Configure<CarGarageDatabaseSettings>(
 builder.Configuration.GetSection("CarGarageDatabase"));
 
 builder.Services.Configure<JwtSettings>(
-builder.Configuration.GetSection("SECRET_KEY"));
+builder.Configuration.GetSection("Auth"));
 
-builder.Services.AddSingleton<CarGarageService>();
+builder.Services.AddSingleton<ICarGarageService, CarGarageService>();
+builder.Services.AddSingleton<JwtToken>();
 
 builder.Services.AddCors(options =>
 {
@@ -45,7 +47,7 @@ builder.Services.AddAuthentication(options =>
      jwtOptions.TokenValidationParameters = new TokenValidationParameters()
      {
          //The SigningKey is defined in the TokenController Class
-         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("SECRET_KEY"))),
+         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("Auth:SecretKey"))),
          ValidateIssuer = true,
          ValidateAudience = true,
          ValidIssuer = "https://localhost:7072",

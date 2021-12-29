@@ -1,17 +1,24 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using CarGarageApi.Models;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace CarGarageApi.Helpers
 {
-    public static class JwtToken
+    public class JwtToken
     {
-        private const string SECRET_KEY = "q8lKoxA5b1fSq3pfNx3 - sOXr9W_piOj6tRULw5hU8lhKbFSqx4xFuJ4YsFMAgVvZuE1VSZQ2toVhkKRUIL9pHzWP__OczZxrut5etH3s_UfxRSEKufDJmdUjF3KynwT2TeVkRQlEfyd4MkL67BmCo5wZe_wYJt4qi85ECYKZVzKuV90PLPVA3mDWAXViRNVa_cXP2IpRSgUpS4wSZgeGps--VE - zuj6gJuh0YEYUyXDMnrIUsEEXo31RBYYT9fNec3TifZzOECWFmeEp6fqMU9U5p527RVp1ioSXORXd0oZ2MnlnYsRUPvIz5Z21 - r9_j6fajruyWmjDH7NP1tBOWw";
-        public static readonly SymmetricSecurityKey SIGNING_KEY = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY));
+        private readonly string _secretKey;
 
-        public static string GenerateJwtToken()
+        public JwtToken(IOptions<JwtSettings> JwtSettings)
         {
-            var credentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(SIGNING_KEY, SecurityAlgorithms.HmacSha256);
+            _secretKey = JwtSettings.Value.SecretKey;
+        }        
+
+        public string GenerateJwtToken()
+        {
+            SymmetricSecurityKey SIGNING_KEY = new(Encoding.UTF8.GetBytes(_secretKey));
+            var credentials = new SigningCredentials(SIGNING_KEY, SecurityAlgorithms.HmacSha256);
 
             var header = new JwtHeader(credentials);
 

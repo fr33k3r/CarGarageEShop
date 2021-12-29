@@ -17,12 +17,12 @@ export default function Item ({ item, handleAddToCart}: Props) {
             <img src = 'https://as2.ftcdn.net/v2/jpg/02/69/56/91/1000_F_269569184_37mGd744FHFN7GEPkYECWM4o47f5lw4e.jpg' alt = 'Not available' />
             <div>
                 <div className="grid-container">
-                    <div className="grid-child purple">
+                    <div className="grid-child">
                         <h3>{item.Make}</h3>
                         <p>{item.Model}</p>
                         <h3>${item.Price}</h3>                     
                     </div>
-                    <div className="grid-child green">
+                    <div className="grid-child">
                         <h3>{item.WareHouseName}</h3>  
                         <p>{item.CarsLocation}</p>
                         <h3>{item.DateAdded}</h3>   

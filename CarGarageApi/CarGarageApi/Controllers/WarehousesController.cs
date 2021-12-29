@@ -13,9 +13,9 @@ namespace CarGarageApi.Controllers
     [Authorize]
     public class WarehousesController : ControllerBase
     {
-        private readonly CarGarageService _carGarageService;
+        private readonly ICarGarageService _carGarageService;
 
-        public WarehousesController(CarGarageService carGarageService) =>
+        public WarehousesController(ICarGarageService carGarageService) =>
             _carGarageService = carGarageService;
 
         //[HttpGet]
@@ -27,13 +27,13 @@ namespace CarGarageApi.Controllers
         {
             List<Warehouse> warehouses  = await _carGarageService.GetAsync();
 
-            List<VehicleFullDetails> vehicles = new List<VehicleFullDetails>();
+            List<VehicleFullDetails> vehicles = new();
 
             foreach (Warehouse warehouse in warehouses)
             {               
                 foreach(var vehicle in warehouse.Cars.Vehicles)
                 {
-                    VehicleFullDetails vehicleFullDetails = new VehicleFullDetails()
+                    VehicleFullDetails vehicleFullDetails = new()
                     {
                         Id = vehicle.Id,
                         WareHouseName = warehouse.Name,

@@ -16,7 +16,7 @@ namespace CarGarageApi.Tests.Controllers
     public class WarehousesControllerTests
     {
         private readonly CarGarageDatabaseSettings _carGarageDatabaseSettings;
-        private readonly Mock<CarGarageService> _mockService;
+        private readonly Mock<ICarGarageService> _mockService;
         private readonly WarehousesController _controller;
         public WarehousesControllerTests()
         {
@@ -29,7 +29,7 @@ namespace CarGarageApi.Tests.Controllers
 
             var _carGarageDatabaseOptions = Options.Create(_carGarageDatabaseSettings);
 
-            _mockService = new Mock<CarGarageService>(_carGarageDatabaseOptions);
+            _mockService = new Mock<ICarGarageService>(_carGarageDatabaseOptions);
             _controller = new WarehousesController(_mockService.Object);
 
         }
@@ -77,7 +77,7 @@ namespace CarGarageApi.Tests.Controllers
             var okResult = await _controller.Get(Id);
 
             // Assert
-            Assert.IsType<CarGarageApi.Models.Warehouse>(okResult.Value);
+            Assert.IsType<Warehouse>(okResult.Value);
         }
 
         [Fact]
